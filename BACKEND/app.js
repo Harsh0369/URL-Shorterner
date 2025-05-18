@@ -29,6 +29,18 @@ app.post("/api/create", (req, res) => {
   res.send({ originalUrl, shortUrl });
 })
 
+
+app.get("/api/:shortUrl", async (req, res) => {
+  const { shortUrl } = req.params;
+  const url = await urlSchema.findOne({ shortUrl });
+  if (!url) {
+    return res.status(404).json({ error: "URL not found" });
+  }
+  url.clicks += 1;
+  await url.save();
+  res.redirect(url.originalUrl);
+});
+
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
