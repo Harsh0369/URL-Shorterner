@@ -10,3 +10,14 @@ export const createShortUrl = async (url) => {
     await shortUrlDao.saveUrl(shortUrl, url);
     return shortUrl;
 };
+
+export const createShortUrlWithUser = async (url,userId) => {
+  if (!url) {
+    return res.status(400).json({ error: "Original URL is required" });
+  }
+
+  const shortUrl = nanoid(7);
+  await shortUrlDao.saveUrl(shortUrl, url,userId);
+  return shortUrl;
+};
+  
