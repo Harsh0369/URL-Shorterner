@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import morgan from "morgan";
 import connectDB from "./src/config/mongo.config.js";
 import shortUrlRoute from "./src/routes/shortUrlRoute.js";
 import authRoute from "./src/routes/authRoutes.js";
@@ -12,6 +13,7 @@ dotenv.config();
 const app = express();
 connectDB();
 app.use(cors());
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
