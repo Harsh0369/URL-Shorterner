@@ -1,4 +1,4 @@
-import * as shortUrlService from '../services/shortUrl.services.js';
+import * as shortUrlService from '../services/shortUrl.service.js';
 import wrapAsync from '../utils/tryCatchWrapper.js';
 
 

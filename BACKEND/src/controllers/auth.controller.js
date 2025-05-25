@@ -1,31 +1,39 @@
-import User from "../models/userModel.js";
+import * as authService from "../services/auth.service.js";
 
 export const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
-
-  // Check if user already exists
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return res.status(400).json({ message: "User already exists" });
-    }
-// Create new user
-    const newUser = new User({
-        name,
-        email,
-        password, // Note: Password should be hashed before saving in production
-    });
-    
     try {
-        await newUser.save();
-        res.status(201).json({ message: "User registered successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Error registering user", error });
+        const { name, email, password } = req.body;
+
+        const userToken = await authService.RegisterUser(name, email, password);
+        res.status(201).json({
+            success: true,
+            message: "User registered successfully",
+            token: userToken
+        }); 
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 }
     
 export const loginUser = async (req, res) => {
-    const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
 
-    // Find user by email
-    const user = await User.find
+        const userToken = await authService.LoginUser(email, password);
+        res.status(200).json({
+            success: true,
+            message: "User logged in successfully",
+            token: userToken
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
 }
