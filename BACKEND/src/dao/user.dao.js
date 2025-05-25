@@ -10,6 +10,10 @@ export const getUserByEmail = async (email) => {
     }   
 }
 
+export const findUserById = async (id) => {
+  return await User.findById(id);
+};
+
 export const createUser = async (name, email, password) => {
   const newUser = new User({ name, email, password });
   await newUser.save();

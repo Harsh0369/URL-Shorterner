@@ -1,4 +1,5 @@
 import { verifyToken } from "../utils/helper.js";
+import { findUserById } from "../dao/user.dao.js";
 import User from "../models/userModel.js"; 
 
 export const authMiddleware = (req, res, next) => {
@@ -14,7 +15,7 @@ export const authMiddleware = (req, res, next) => {
   try {
    
     const decoded = verifyToken(token); 
-    const user = User.findById(decoded.id);
+    const user = findUserById(decoded);
     if (!user) {
       return res.status(401).json({
         success: false,
