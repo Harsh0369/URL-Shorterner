@@ -1,4 +1,4 @@
-import urlSchema from '../models/shortUrlModel.js';
+import urlSchema from "../models/shortUrlModel.js";
 export const saveUrl = async (shortUrl, originalUrl, userId) => {
   try {
     const newUrl = new urlSchema({
@@ -10,7 +10,7 @@ export const saveUrl = async (shortUrl, originalUrl, userId) => {
     }
     await newUrl.save();
   } catch (err) {
-      console.error(err);
+    console.error(err);
     if (err.code == 11000) {
       throw new ConflictError("Short URL already exists");
     }
@@ -19,14 +19,26 @@ export const saveUrl = async (shortUrl, originalUrl, userId) => {
 };
 
 export const getUrl = async (shortUrl) => {
-    try {
-        const url = await urlSchema.findOne({ shortUrl });
-        if (!url) {
-            throw new Error("URL not found");
-        }
-        return url;
-    } catch (err) {
-        console.error(err);
+  try {
+    const url = await urlSchema.findOne({ shortUrl });
+    if (!url) {
+      throw new Error("URL not found");
     }
-}
+    return url;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
+export const getCUstomShortUrl = async (slug) => {
+  try {
+    const url = await urlSchema.findOne({ shortUrl:slug });
+    if (!url) {
+      throw new Error("Custom short URL not found");
+    }
+    return url;
+  } catch (err) {
+    console.error(err);
+    throw new Error("Error fetching custom short URL: " + err.message);
+  }
+};

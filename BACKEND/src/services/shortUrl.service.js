@@ -18,4 +18,14 @@ export const createShortUrlWithUser = async (url,userId) => {
   await shortUrlDao.saveUrl(shortUrl, url,userId);
   return shortUrl;
 };
+
+export const createCustomShortUrl = async (url, slug) => {
+  const shortUrl = slug || nanoid(7);
+  const existingUrl = await shortUrlDao.getCUstomShortUrl(shortUrl);
+  if (existingUrl) {
+    throw new Error("Custom short URL already exists");
+  }
+  await shortUrlDao.saveUrl(shortUrl, url);
+  return shortUrl;
+}
   
